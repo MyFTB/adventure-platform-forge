@@ -6,12 +6,12 @@ issueTrackerURL="https://github.com/MojangPlsFix/adventure-platform-forge/issues
 [[mods]]
 modId="adventure_platform_forge"
 version="${file.jarVersion}"
-displayName="adventure-platform-fabric" #mandatory
+displayName="adventure-platform-forge" #mandatory
 #logoFile="examplemod.png" #optional
 credits="KyoriPowered"
 authors="MojangPlsFix" #optional
 description='''
-An adaptor for adventure to integrate with Fabric
+An adaptor for adventure to integrate with Forge
 '''
 
 [[dependencies.adventure_platform_forge]]

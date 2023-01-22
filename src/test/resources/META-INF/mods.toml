@@ -1,0 +1,36 @@
+modLoader="javafml"
+loaderVersion="[40,)"
+license="MIT License"
+issueTrackerURL="https://github.com/MojangPlsFix/adventure-platform-forge/issues"
+
+[[mods]]
+modId="adventure_platform_forge_test"
+version="${file.jarVersion}"
+displayName="adventure-platform-forge Test Mod" #mandatory
+#logoFile="examplemod.png" #optional
+credits="KyoriPowered"
+authors="MojangPlsFix" #optional
+description='''
+An adaptor for adventure to integrate with Forge Test Mod
+'''
+
+[[dependencies.adventure_platform_forge_test]]
+modId="adventure_platform_forge" #mandatory
+mandatory=true #mandatory
+versionRange="[0.0.0,)" #mandatory
+ordering="NONE"
+side="SERVER"
+
+[[dependencies.adventure_platform_forge_test]]
+modId="forge" #mandatory
+mandatory=true #mandatory
+versionRange="[40,)" #mandatory
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.adventure_platform_forge_test]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.18.2,1.19)"
+ordering="NONE"
+side="BOTH"
