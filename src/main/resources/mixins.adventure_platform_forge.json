@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "net.kyori.adventure.platform.forge.impl.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "CommandSourceStackMixin",
+    "ResourceLocationMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap" : "mixins.adventure_platform_forge.refmap.json"
+}
