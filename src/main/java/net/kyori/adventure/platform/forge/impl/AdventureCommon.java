@@ -5,7 +5,10 @@ import java.util.Locale;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.kyori.adventure.Adventure;
 import net.kyori.adventure.identity.Identity;
+import net.kyori.adventure.platform.forge.ComponentArgumentType;
+import net.kyori.adventure.platform.forge.KeyArgumentType;
 import net.kyori.adventure.platform.forge.PlayerLocales;
 import net.kyori.adventure.platform.forge.impl.server.ForgeServerAudiencesImpl;
 import net.kyori.adventure.pointer.Pointered;
@@ -17,8 +20,11 @@ import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.TranslationRegistry;
 import net.kyori.adventure.translation.Translator;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.commands.synchronization.ArgumentTypes;
+import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
 import net.minecraft.locale.Language;
 import net.kyori.adventure.text.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -27,12 +33,15 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@Mod("adventure_platform_forge")
+@Mod(AdventureCommon.MOD_ID)
 public class AdventureCommon {
-
+    public static final String MOD_ID = "adventure_platform_forge";
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static final ComponentFlattener FLATTENER;
     private static final Pattern LOCALIZATION_PATTERN = Pattern.compile("%(?:(\\d+)\\$)?s");
 
@@ -99,12 +108,23 @@ public class AdventureCommon {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    static ResourceLocation res(final @NotNull String value) {
+        return new ResourceLocation(Adventure.NAMESPACE, value);
+    }
     private void commonSetup(final FMLCommonSetupEvent event) {
-        //TODO Register ArgumentTypes
+        ArgumentTypes.register("adventure:component", ComponentArgumentType.class, new ComponentArgumentTypeSerializer());
+        ArgumentTypes.register("adventure:key", KeyArgumentType.class, new EmptyArgumentSerializer<>(KeyArgumentType::key));
     }
 
     public static Function<Pointered, Locale> localePartition() {
         return ptr -> ptr.getOrDefault(Identity.LOCALE, Locale.US);
+    }
+
+    @SubscribeEvent
+    public void registerCommands(PlayerLocales.LocaleChangedEvent event) {
+        ForgeServerAudiencesImpl.forEachInstance(instance -> {
+            instance.bossBars().refreshTitles(event.player());
+        });
     }
 
     public static Pointered pointered(final FPointered pointers) {
@@ -116,12 +136,5 @@ public class AdventureCommon {
         @Override
         @NotNull
         Pointers pointers();
-    }
-
-    @SubscribeEvent
-    public void registerCommands(PlayerLocales.LocaleChangedEvent event) {
-        ForgeServerAudiencesImpl.forEachInstance(instance -> {
-            instance.bossBars().refreshTitles(event.player());
-        });
     }
 }

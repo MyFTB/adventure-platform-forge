@@ -1,10 +1,11 @@
 package net.kyori.adventure.platform.forge.impl;
 
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.forge.AdventureCommandSourceStack;
 import net.kyori.adventure.platform.forge.impl.server.ForgeServerAudiencesImpl;
 import net.minecraft.commands.CommandSource;
 
-public interface AdventureCommandSourceStackInternal extends AdventureCommandSourceStack{
+public interface AdventureCommandSourceStackInternal extends AdventureCommandSourceStack {
     /**
      * Set the audience to be delegated to.
      *

@@ -1,11 +1,9 @@
 package net.kyori.adventure.platform.forge;
 
 import java.util.Locale;
-import net.kyori.adventure.platform.forge.impl.LocaleHolderBridge;
+import net.kyori.adventure.platform.forge.impl.bridge.LocaleHolderBridge;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.LevelEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

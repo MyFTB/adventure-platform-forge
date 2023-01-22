@@ -1,4 +1,4 @@
-package net.kyori.adventure.platform.forge.impl;
+package net.kyori.adventure.platform.forge.impl.bridge;
 
 import java.util.Locale;
 import org.jetbrains.annotations.NotNull;

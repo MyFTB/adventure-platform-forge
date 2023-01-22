@@ -13,7 +13,7 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.platform.forge.ForgeAudiences;
 import net.kyori.adventure.platform.forge.ForgeServerAudiences;
-import net.kyori.adventure.platform.forge.impl.AdventureCommandSourceStack;
+import net.kyori.adventure.platform.forge.AdventureCommandSourceStack;
 import net.kyori.adventure.platform.forge.impl.AdventureCommandSourceStackInternal;
 import net.kyori.adventure.platform.forge.impl.AdventureCommon;
 import net.kyori.adventure.platform.forge.impl.WrappedComponent;

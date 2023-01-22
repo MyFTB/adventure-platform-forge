@@ -2,17 +2,18 @@ package net.kyori.adventure.platform.forge.impl.mixin;
 
 import java.util.Objects;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.platform.forge.ForgeServerAudiences;
-import net.kyori.adventure.platform.forge.impl.AdventureCommandSourceStack;
+import net.kyori.adventure.platform.forge.AdventureCommandSourceStack;
 import net.kyori.adventure.platform.forge.impl.AdventureCommandSourceStackInternal;
+import net.kyori.adventure.platform.forge.impl.bridge.PlayerIdentityBridge;
 import net.kyori.adventure.platform.forge.impl.server.ForgeServerAudiencesImpl;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -64,8 +65,8 @@ public abstract class CommandSourceStackMixin implements AdventureCommandSourceS
 
     @Override
     public @NotNull Identity identity() {
-        if (this.source instanceof Identified) {
-            return ((Identified) this.source).identity();
+        if (this.source instanceof Player) {
+            return new PlayerIdentityBridge((Player) this.source).identity();
         } else {
             return Identity.nil();
         }

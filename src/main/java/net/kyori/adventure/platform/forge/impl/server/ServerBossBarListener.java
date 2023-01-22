@@ -6,6 +6,7 @@ import java.util.Map;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.platform.forge.ForgeServerAudiences;
 import net.kyori.adventure.platform.forge.impl.AbstractBossBarListener;
+import net.kyori.adventure.platform.forge.impl.server.bridge.ServerBossEventBridge;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBossEventPacket;
 import net.minecraft.server.level.ServerBossEvent;
@@ -23,7 +24,7 @@ public class ServerBossBarListener extends AbstractBossBarListener<ServerBossEve
     }
 
     public void subscribeAll(final Collection<ServerPlayer> players, final BossBar bar) {
-        ((ServerBossEventBridge) this.minecraftCreating(requireNonNull(bar, "bar"))).adventure$addAll(players);
+        new ServerBossEventBridge(this.minecraftCreating(requireNonNull(bar, "bar"))).addAll(players);
     }
 
     public void unsubscribe(final ServerPlayer player, final BossBar bar) {
@@ -40,7 +41,7 @@ public class ServerBossBarListener extends AbstractBossBarListener<ServerBossEve
 
     public void unsubscribeAll(final Collection<ServerPlayer> players, final BossBar bar) {
         this.bars.computeIfPresent(bar, (key, old) -> {
-            ((ServerBossEventBridge) old).adventure$removeAll(players);
+            new ServerBossEventBridge(old).removeAll(players);
             if (old.getPlayers().isEmpty()) {
                 key.removeListener(this);
                 return null;
@@ -61,14 +62,15 @@ public class ServerBossBarListener extends AbstractBossBarListener<ServerBossEve
      */
     public void replacePlayer(final ServerPlayer old, final ServerPlayer newPlayer) {
         for (final ServerBossEvent bar : this.bars.values()) {
-            ((ServerBossEventBridge) bar).adventure$replaceSubscriber(old, newPlayer);
+            bar.removePlayer(old);
+            bar.addPlayer(newPlayer);
         }
     }
 
     /**
      * Refresh titles when a player's locale has changed.
      *
-     * @param player player to refresh titles fro
+     * @param player player to refresh titles from
      */
     public void refreshTitles(final ServerPlayer player) {
         for (final ServerBossEvent bar : this.bars.values()) {

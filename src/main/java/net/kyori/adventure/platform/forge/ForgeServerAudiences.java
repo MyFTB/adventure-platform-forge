@@ -2,9 +2,7 @@ package net.kyori.adventure.platform.forge;
 
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.AudienceProvider;
-import net.kyori.adventure.platform.forge.impl.AdventureCommandSourceStack;
 import net.kyori.adventure.platform.forge.impl.server.ForgeServerAudiencesImpl;
-import net.kyori.adventure.platform.forge.impl.server.MinecraftServerBridge;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
@@ -23,7 +21,7 @@ public interface ForgeServerAudiences extends AudienceProvider, ForgeAudiences {
      * @since 4.0.0
      */
     static @NotNull ForgeServerAudiences of(final @NotNull MinecraftServer server) {
-        return ((MinecraftServerBridge) server).adventure$globalProvider();
+        return new ForgeServerAudiencesImpl.Builder(server).build();
     }
 
     /**

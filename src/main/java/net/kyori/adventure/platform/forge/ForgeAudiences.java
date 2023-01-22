@@ -7,6 +7,7 @@ import java.util.function.UnaryOperator;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.platform.forge.impl.NonWrappingComponentSerializer;
+import net.kyori.adventure.platform.forge.impl.bridge.ResourceLocationKeyBridge;
 import net.kyori.adventure.platform.forge.impl.WrappedComponent;
 import net.kyori.adventure.pointer.Pointered;
 import net.kyori.adventure.text.Component;
@@ -55,10 +56,9 @@ public interface ForgeAudiences {
         if (key == null) {
             return null;
         }
-        /* TODO Find out why compiler does not regen
-        if (key instanceof ResourceLocation) {
-            return (ResourceLocation) key;
-        }*/
+        if (key instanceof ResourceLocationKeyBridge) {
+            return ((ResourceLocationKeyBridge) key).location();
+        }
 
         return new ResourceLocation(key.namespace(), key.value());
     }
