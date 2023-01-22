@@ -160,3 +160,45 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
     options.compilerArgs += ['-Xlint:-processing']
 }
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/fabrossmann/adventure-platform-forge")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        release(MavenPublication) {
+            groupId = "net.kyori.adventure"
+            artifactId = "adventure-platform-forge"
+
+            artifact jar
+            pom {
+                name = 'adventure-platform-forge'
+                description = 'Integration between adventure and Forge platform.'
+                url = 'https://github.com/MojangPlsFix/adventure-platform-forge'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'hhttps://github.com/MojangPlsFix/adventure-platform-forge/blob/mc/1.18/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'MojangPlsFix'
+                        name = 'MojangPlsFix'
+                    }
+                }
+                issueManagement {
+                    system = 'GitHub Issues'
+                    url = 'https://github.com/MojangPlsFix/adventure-platform-forge'
+                }
+            }
+        }
+    }
+}
