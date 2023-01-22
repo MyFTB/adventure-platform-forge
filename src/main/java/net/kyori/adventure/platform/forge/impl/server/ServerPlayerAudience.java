@@ -13,11 +13,11 @@ import net.kyori.adventure.platform.forge.ForgeAudiences;
 import net.kyori.adventure.platform.forge.impl.GameEnums;
 import net.kyori.adventure.platform.forge.impl.bridge.PointerProviderBridge;
 import net.kyori.adventure.platform.forge.impl.server.bridge.ServerPlayerBridge;
-import net.kyori.adventure.platform.forge.impl.server.mapper.TextComponentMapper;
 import net.kyori.adventure.pointer.Pointers;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.sound.SoundStop;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
@@ -26,7 +26,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundClearTitlesPacket;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
@@ -180,8 +179,8 @@ public class ServerPlayerAudience implements Audience {
     }
 
     private String adventure$serialize(final @NotNull Component component) {
-        //return GsonComponentSerializer.gson().serialize(this.controller.renderer().render(component, this));
-        return net.minecraft.network.chat.Component.Serializer.toJson(TextComponentMapper.toNative(component));
+        return GsonComponentSerializer.gson().serialize(this.controller.renderer().render(component, this));
+        //return net.minecraft.network.chat.Component.Serializer.toJson(TextComponentMapper.toNative(component));
     }
 
     @Override
