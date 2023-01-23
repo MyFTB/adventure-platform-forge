@@ -3,15 +3,15 @@ package net.kyori.adventure.platform.forge.impl.mixin;
 import java.util.Objects;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
-import net.kyori.adventure.platform.forge.ForgeServerAudiences;
 import net.kyori.adventure.platform.forge.AdventureCommandSourceStack;
+import net.kyori.adventure.platform.forge.ForgeServerAudiences;
 import net.kyori.adventure.platform.forge.impl.AdventureCommandSourceStackInternal;
 import net.kyori.adventure.platform.forge.impl.bridge.PlayerIdentityBridge;
 import net.kyori.adventure.platform.forge.impl.server.ForgeServerAudiencesImpl;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
-import net.kyori.adventure.text.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
@@ -22,16 +22,22 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(CommandSourceStack.class)
 public abstract class CommandSourceStackMixin implements AdventureCommandSourceStackInternal {
     // @formatter:off
-    @Shadow @Final private CommandSource source;
-    @Shadow @Final private boolean silent;
-    @Shadow @Final private MinecraftServer server;
-
-    @Shadow protected abstract void shadow$broadcastToAdmins(net.minecraft.network.chat.Component text);
-    // @formatter:on
-
+    @Shadow
+    @Final
+    private CommandSource source;
+    @Shadow
+    @Final
+    private boolean silent;
+    @Shadow
+    @Final
+    private MinecraftServer server;
     private boolean adventure$assigned = false;
+    // @formatter:on
     private Audience adventure$out;
     private ForgeServerAudiences adventure$controller;
+
+    @Shadow
+    protected abstract void shadow$broadcastToAdmins(net.minecraft.network.chat.Component text);
 
     @Override
     public void sendSuccess(final @NotNull Component text, final boolean sendToOps) {

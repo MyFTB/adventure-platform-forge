@@ -6,15 +6,13 @@ import net.minecraft.network.protocol.game.ClientboundTabListPacket;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-public class ServerPlayerBridge{
+public class ServerPlayerBridge {
     private final ServerPlayer player;
-
+    private Component adventure$tabListHeader = TextComponent.EMPTY;
+    private Component adventure$tabListFooter = TextComponent.EMPTY;
     public ServerPlayerBridge(ServerPlayer player) {
         this.player = player;
     }
-
-    private Component adventure$tabListHeader = TextComponent.EMPTY;
-    private Component adventure$tabListFooter = TextComponent.EMPTY;
 
     /**
      * Update the tab list header and footer.
@@ -23,7 +21,7 @@ public class ServerPlayerBridge{
      * @param footer footer, null to leave unchanged
      * @since 4.0.0
      */
-    public void updateTabList(final @Nullable Component header, final @Nullable Component footer){
+    public void updateTabList(final @Nullable Component header, final @Nullable Component footer) {
         if (header != null) {
             this.adventure$tabListHeader = header;
         }

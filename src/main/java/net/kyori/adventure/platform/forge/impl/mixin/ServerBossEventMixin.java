@@ -35,7 +35,7 @@ public class ServerBossEventMixin extends BossEvent {
         }
 
         final UUID testId = ((ServerPlayer) player).getUUID();
-        for (final Iterator<?> it = instance.iterator(); it.hasNext();) {
+        for (final Iterator<?> it = instance.iterator(); it.hasNext(); ) {
             if (((ServerPlayer) it.next()).getUUID().equals(testId)) {
                 it.remove();
                 return true;

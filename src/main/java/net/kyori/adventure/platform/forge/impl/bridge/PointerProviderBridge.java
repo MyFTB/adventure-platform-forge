@@ -21,7 +21,7 @@ public class PointerProviderBridge implements Identified {
      * @return the pointers
      */
     @NotNull
-    public Pointers pointers(){
+    public Pointers pointers() {
         Pointers pointers = this.pointers;
         if (pointers == null) {
             synchronized (this) {

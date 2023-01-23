@@ -21,6 +21,9 @@ public final class GameEnums {
         = MappedRegistry.named(SoundSource.class, soundSourceProvider(),
         Sound.Source.class, Sound.Source.NAMES);
 
+    private GameEnums() {
+    }
+
     private static Function<String, @Nullable SoundSource> soundSourceProvider() {
         final Map<String, SoundSource> sources = new HashMap<>();
         for (final SoundSource source : SoundSource.values()) {
@@ -28,8 +31,5 @@ public final class GameEnums {
         }
 
         return sources::get;
-    }
-
-    private GameEnums() {
     }
 }

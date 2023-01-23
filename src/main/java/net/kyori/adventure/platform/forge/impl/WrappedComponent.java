@@ -18,15 +18,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class WrappedComponent implements Component {
 
-    private Component converted;
-    private @Nullable Object deepConvertedLocalized = null;
     private final net.kyori.adventure.text.Component wrapped;
     private final @Nullable Function<Pointered, ?> partition;
     private final @Nullable ComponentRenderer<Pointered> renderer;
+    private Component converted;
+    private @Nullable Object deepConvertedLocalized = null;
     private @Nullable Object lastData;
     private @Nullable WrappedComponent lastRendered;
 
-    public WrappedComponent(final net.kyori.adventure.text.Component wrapped, final @Nullable Function<Pointered, ?> partition, final @Nullable ComponentRenderer<Pointered> renderer) {
+    public WrappedComponent(final net.kyori.adventure.text.Component wrapped, final @Nullable Function<Pointered, ?> partition,
+                            final @Nullable ComponentRenderer<Pointered> renderer) {
         this.wrapped = wrapped;
         this.partition = partition;
         this.renderer = renderer;
@@ -94,6 +95,7 @@ public class WrappedComponent implements Component {
     public Style getStyle() {
         return this.deepConverted().getStyle();
     }
+
     @Override
     public String getString() {
         return PlainTextComponentSerializer.plainText().serialize(this.rendered(AdventureCommon.pointered(Pointers::empty)).wrapped);

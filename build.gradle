@@ -104,10 +104,10 @@ mixin {
 
 shadowJar {
     mergeServiceFiles()
-    classifier=''
+    classifier = ''
     configurations = [project.configurations.shade]
 
-    relocate('net.kyori', "${project.group}.shadow.net.kyori"){
+    relocate('net.kyori', "${project.group}.shadow.net.kyori") {
         exclude 'net/kyori/adventure/platform/forge/**'
     }
 
@@ -149,7 +149,7 @@ jar {
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "KyoriPowered",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'MixinConfigs': 'mixins.adventure_platform_forge.json'
+                'MixinConfigs'            : 'mixins.adventure_platform_forge.json'
         ])
     }
 }
@@ -163,14 +163,14 @@ tasks.withType(JavaCompile).configureEach {
 
 publishing {
     repositories {
-      maven {
-        name = "GitHubPackages"
-        url = "https://maven.pkg.github.com/MojangPlsFix/adventure-platform-forge"
-        credentials {
-          username = System.getenv("GITHUB_ACTOR")
-          password = System.getenv("GITHUB_TOKEN")
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/MojangPlsFix/adventure-platform-forge"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
         }
-      }
     }
     publications {
         release(MavenPublication) {
@@ -178,7 +178,7 @@ publishing {
             artifactId = "adventure-platform-forge"
 
             artifact tasks.shadowJar
-            
+
             pom {
                 name = 'adventure-platform-forge'
                 description = 'Integration between adventure and Forge platform.'

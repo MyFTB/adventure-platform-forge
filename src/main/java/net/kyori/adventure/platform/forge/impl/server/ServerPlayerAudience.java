@@ -60,6 +60,24 @@ public class ServerPlayerAudience implements Audience {
         this.controller = controller;
     }
 
+    private static String validateField(final String content, final int length, final String name) {
+        if (content == null) {
+            return content;
+        }
+
+        final int actual = content.length();
+        if (actual > length) {
+            throw new IllegalArgumentException(
+                "Field '" + name + "' has a maximum length of " + length + " but was passed '" + content + "', which was " + actual +
+                    " characters long.");
+        }
+        return content;
+    }
+
+    static int ticks(final @NotNull Duration duration) {
+        return duration.getSeconds() == -1 ? -1 : (int) (duration.toMillis() / 50);
+    }
+
     void sendPacket(final Packet<?> packet) {
         this.player.connection.send(packet);
     }
@@ -129,7 +147,8 @@ public class ServerPlayerAudience implements Audience {
             return;
         }
 
-        this.sendPacket(new ClientboundSoundEntityPacket(event, GameEnums.SOUND_SOURCE.toMinecraft(sound.source()), targetEntity, sound.volume(), sound.pitch()));
+        this.sendPacket(
+            new ClientboundSoundEntityPacket(event, GameEnums.SOUND_SOURCE.toMinecraft(sound.source()), targetEntity, sound.volume(), sound.pitch()));
     }
 
     @Override
@@ -144,11 +163,13 @@ public class ServerPlayerAudience implements Audience {
     public void openBook(final @NotNull Book book) {
         final ItemStack bookStack = new ItemStack(Items.WRITTEN_BOOK, 1);
         final CompoundTag bookTag = bookStack.getOrCreateTag();
-        bookTag.putString(WrittenBookItem.TAG_TITLE, validateField(this.adventure$plain(book.title()), WrittenBookItem.TITLE_MAX_LENGTH, WrittenBookItem.TAG_TITLE));
+        bookTag.putString(WrittenBookItem.TAG_TITLE,
+            validateField(this.adventure$plain(book.title()), WrittenBookItem.TITLE_MAX_LENGTH, WrittenBookItem.TAG_TITLE));
         bookTag.putString(WrittenBookItem.TAG_AUTHOR, this.adventure$plain(book.author()));
         final ListTag pages = new ListTag();
         if (book.pages().size() > WrittenBookItem.MAX_PAGES) {
-            throw new IllegalArgumentException("Book provided had " + book.pages().size() + " pages, but is only allowed a maximum of " + WrittenBookItem.MAX_PAGES);
+            throw new IllegalArgumentException(
+                "Book provided had " + book.pages().size() + " pages, but is only allowed a maximum of " + WrittenBookItem.MAX_PAGES);
         }
         for (final Component page : book.pages()) {
             pages.add(StringTag.valueOf(validateField(this.adventure$serialize(page), WrittenBookItem.PAGE_LENGTH, "page")));
@@ -157,21 +178,11 @@ public class ServerPlayerAudience implements Audience {
         bookTag.putBoolean(WrittenBookItem.TAG_RESOLVED, true); // todo: any parseable texts?
 
         final ItemStack previous = this.player.getInventory().getSelected();
-        this.sendPacket(new ClientboundContainerSetSlotPacket(-2, this.player.containerMenu.getStateId(), this.player.getInventory().selected, bookStack));
+        this.sendPacket(
+            new ClientboundContainerSetSlotPacket(-2, this.player.containerMenu.getStateId(), this.player.getInventory().selected, bookStack));
         this.player.openItemGui(bookStack, InteractionHand.MAIN_HAND);
-        this.sendPacket(new ClientboundContainerSetSlotPacket(-2, this.player.containerMenu.getStateId(), this.player.getInventory().selected, previous));
-    }
-
-    private static String validateField(final String content, final int length, final String name) {
-        if (content == null) {
-            return content;
-        }
-
-        final int actual = content.length();
-        if (actual > length) {
-            throw new IllegalArgumentException("Field '" + name + "' has a maximum length of " + length + " but was passed '" + content + "', which was " + actual + " characters long.");
-        }
-        return content;
+        this.sendPacket(
+            new ClientboundContainerSetSlotPacket(-2, this.player.containerMenu.getStateId(), this.player.getInventory().selected, previous));
     }
 
     private String adventure$plain(final @NotNull Component component) {
@@ -224,10 +235,6 @@ public class ServerPlayerAudience implements Audience {
         }
     }
 
-    static int ticks(final @NotNull Duration duration) {
-        return duration.getSeconds() == -1 ? -1 : (int) (duration.toMillis() / 50);
-    }
-
     @Override
     public void clearTitle() {
         this.sendPacket(new ClientboundClearTitlesPacket(false));
@@ -237,7 +244,6 @@ public class ServerPlayerAudience implements Audience {
     public void resetTitle() {
         this.sendPacket(new ClientboundClearTitlesPacket(true));
     }
-
 
 
     @Override

@@ -13,11 +13,11 @@ public interface KeyMixin {
      * Creates a key.
      *
      * @param namespace the namespace
-     * @param value the value
+     * @param value     the value
      * @return the key
      * @throws RuntimeException the namespace or value contains an invalid character
      * @reason implemented by mixin to the Vanilla class
-     * @author MojangPlsFix,zml2008
+     * @author MojangPlsFix, zml2008
      */
     @Overwrite
     static @NotNull Key key(final String namespace, final String value) {

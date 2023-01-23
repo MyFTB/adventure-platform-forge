@@ -1,7 +1,8 @@
 package net.kyori.adventure.platform.forge.impl.mixin;
 
-import com.mojang.authlib.GameProfile;
+import com.google.common.collect.MapMaker;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.ForwardingAudience;
@@ -11,6 +12,7 @@ import net.kyori.adventure.platform.forge.impl.bridge.LocaleHolderBridge;
 import net.kyori.adventure.platform.forge.impl.server.ForgeServerAudiencesImpl;
 import net.kyori.adventure.platform.forge.impl.server.FriendlyByteBufBridge;
 import net.kyori.adventure.platform.forge.impl.server.RenderableAudience;
+import net.kyori.adventure.platform.forge.impl.server.ServerPlayerAudience;
 import net.minecraft.network.protocol.game.ServerboundClientInformationPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,16 +28,20 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayer.class)
-public class ServerPlayerMixin extends PlayerMixin implements ForwardingAudience.Single, LocaleHolderBridge, RenderableAudience{
+public class ServerPlayerMixin extends PlayerMixin implements ForwardingAudience.Single, LocaleHolderBridge, RenderableAudience {
 
-    @Shadow @Final public MinecraftServer server;
-    @Shadow public ServerGamePacketListenerImpl connection;
+    private final Map<ForgeServerAudiencesImpl, Audience> adventure$renderers = new MapMaker().weakKeys().makeMap();
+    @Shadow
+    @Final
+    public MinecraftServer server;
+    @Shadow
+    public ServerGamePacketListenerImpl connection;
     private Audience adventure$backing;
     private Locale adventure$locale;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void adventure$init(final CallbackInfo ci) {
-        this.adventure$backing = ForgeServerAudiences.of(this.server).audience((ServerPlayer) (Object)this);
+        this.adventure$backing = ForgeServerAudiences.of(this.server).audience((ServerPlayer) (Object) this);
     }
 
     @Inject(method = "updateOptions", at = @At("HEAD"))
@@ -44,7 +50,7 @@ public class ServerPlayerMixin extends PlayerMixin implements ForwardingAudience
         final @Nullable Locale locale = LocaleHolderBridge.toLocale(language);
         if (!Objects.equals(this.adventure$locale, locale)) {
             this.adventure$locale = locale;
-            MinecraftForge.EVENT_BUS.post(new PlayerLocales.LocaleChangedEvent((ServerPlayer) (Object)this,locale));
+            MinecraftForge.EVENT_BUS.post(new PlayerLocales.LocaleChangedEvent((ServerPlayer) (Object) this, locale));
         }
     }
 
@@ -73,7 +79,7 @@ public class ServerPlayerMixin extends PlayerMixin implements ForwardingAudience
 
     @Override
     public Audience renderUsing(ForgeServerAudiencesImpl controller) {
-        return null;
+        return this.adventure$renderers.computeIfAbsent(controller, ctrl -> new ServerPlayerAudience((ServerPlayer) (Object) this, ctrl));
     }
 
     @Override

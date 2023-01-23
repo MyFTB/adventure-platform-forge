@@ -2,13 +2,10 @@ package net.kyori.adventure.platform.forge;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.platform.forge.impl.NonWrappingComponentSerializer;
 import net.kyori.adventure.platform.forge.impl.bridge.ResourceLocationKeyBridge;
-import net.kyori.adventure.platform.forge.impl.WrappedComponent;
 import net.kyori.adventure.pointer.Pointered;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
@@ -18,10 +15,9 @@ import net.kyori.adventure.util.ComponentMessageThrowable;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import static java.util.Objects.requireNonNull;
 public interface ForgeAudiences {
+/*
     static net.minecraft.network.chat.Component update(final net.minecraft.network.chat.Component input, final UnaryOperator<Component> modifier){
         final Component modified;
         final @Nullable Function<Pointered, ?> partition;
@@ -39,6 +35,7 @@ public interface ForgeAudiences {
         }
         return new WrappedComponent(modified, partition, renderer);
     }
+*/
 
     /**
      * Convert a Kyori {@link Key} instance to a MC ResourceLocation.

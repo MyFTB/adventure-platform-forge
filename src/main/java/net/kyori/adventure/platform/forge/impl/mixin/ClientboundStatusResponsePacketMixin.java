@@ -7,6 +7,7 @@ import net.minecraft.network.protocol.status.ClientboundStatusResponsePacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
 @Mixin(ClientboundStatusResponsePacket.class)
 public class ClientboundStatusResponsePacketMixin {
     @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/google/gson/GsonBuilder;registerTypeAdapter(Ljava/lang/reflect/Type;Ljava/lang/Object;)Lcom/google/gson/GsonBuilder;", ordinal = 0), remap = false)

@@ -1,5 +1,7 @@
 package net.kyori.adventure.platform.forge;
 
+import static java.util.Objects.requireNonNull;
+
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.AudienceProvider;
 import net.kyori.adventure.platform.forge.impl.server.ForgeServerAudiencesImpl;
@@ -9,7 +11,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 
-import static java.util.Objects.requireNonNull;
 public interface ForgeServerAudiences extends AudienceProvider, ForgeAudiences {
     /**
      * Get the shared audience provider for the server.

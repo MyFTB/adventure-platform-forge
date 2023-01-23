@@ -12,8 +12,8 @@ public final class ResourceLocationKeyBridge implements Key {
         this.location = location;
     }
 
-    public ResourceLocationKeyBridge(String namespace,String value) {
-        this.location = new ResourceLocation(namespace,value);
+    public ResourceLocationKeyBridge(String namespace, String value) {
+        this.location = new ResourceLocation(namespace, value);
     }
 
     @Override

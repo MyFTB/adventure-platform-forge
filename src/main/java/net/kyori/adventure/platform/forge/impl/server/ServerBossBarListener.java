@@ -1,5 +1,7 @@
 package net.kyori.adventure.platform.forge.impl.server;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,7 +15,6 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 
-import static java.util.Objects.requireNonNull;
 public class ServerBossBarListener extends AbstractBossBarListener<ServerBossEvent> {
     public ServerBossBarListener(final ForgeServerAudiences controller) {
         super(controller);
@@ -57,7 +58,7 @@ public class ServerBossBarListener extends AbstractBossBarListener<ServerBossEve
      * <p>This should be triggered when the entity representing a player changes
      * (such as during a respawn)</p>
      *
-     * @param old old player
+     * @param old       old player
      * @param newPlayer new one
      */
     public void replacePlayer(final ServerPlayer old, final ServerPlayer newPlayer) {
@@ -86,7 +87,7 @@ public class ServerBossBarListener extends AbstractBossBarListener<ServerBossEve
      * @param player The player to remove
      */
     public void unsubscribeFromAll(final ServerPlayer player) {
-        for (final Iterator<Map.Entry<BossBar, ServerBossEvent>> it = this.bars.entrySet().iterator(); it.hasNext();) {
+        for (final Iterator<Map.Entry<BossBar, ServerBossEvent>> it = this.bars.entrySet().iterator(); it.hasNext(); ) {
             final ServerBossEvent bar = it.next().getValue();
             if (bar.getPlayers().contains(player)) {
                 bar.removePlayer(player);

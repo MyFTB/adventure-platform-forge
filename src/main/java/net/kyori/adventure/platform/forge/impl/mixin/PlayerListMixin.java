@@ -24,12 +24,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(PlayerList.class)
 public class PlayerListMixin {
-    @Shadow @Final @Mutable private List<ServerPlayer> players;
+    @Shadow
+    @Final
+    @Mutable
+    private List<ServerPlayer> players;
 
-    @Shadow @Final @Mutable private Map<UUID, ServerPlayer> playersByUUID;
+    @Shadow
+    @Final
+    @Mutable
+    private Map<UUID, ServerPlayer> playersByUUID;
 
     @Inject(method = "<init>", at = @At("RETURN"), require = 0)
-    private void adventure$replacePlayerLists(final MinecraftServer server, final RegistryAccess.Frozen tracker, final PlayerDataStorage handler, final int i,
+    private void adventure$replacePlayerLists(final MinecraftServer server, final RegistryAccess.Frozen tracker, final PlayerDataStorage handler,
+                                              final int i,
                                               final CallbackInfo ci) {
         this.players = new CopyOnWriteArrayList<>();
         this.playersByUUID = new ConcurrentHashMap<>();

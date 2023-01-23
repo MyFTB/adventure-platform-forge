@@ -24,6 +24,10 @@ public class ComponentArgumentType implements ArgumentType<Component> {
 
     private final Format format;
 
+    private ComponentArgumentType(final Format format) {
+        this.format = requireNonNull(format, "format");
+    }
+
     /**
      * Get the argument type for component arguments.
      *
@@ -82,10 +86,6 @@ public class ComponentArgumentType implements ArgumentType<Component> {
         };
     }
 
-    private ComponentArgumentType(final Format format) {
-        this.format = requireNonNull(format, "format");
-    }
-
     @Override
     public @NotNull Component parse(final @NotNull StringReader reader) throws CommandSyntaxException {
         final String remaining = reader.getRemaining();
@@ -112,15 +112,6 @@ public class ComponentArgumentType implements ArgumentType<Component> {
      */
     public @NotNull Format format() {
         return this.format;
-    }
-
-    /**
-     * The result of reading a component.
-     *
-     * @param parsed        the parsed component
-     * @param charsConsumed the number of characters consumed from the input string
-     */
-    record ReadResult(Component parsed, int charsConsumed) {
     }
 
     /**
@@ -185,5 +176,14 @@ public class ComponentArgumentType implements ArgumentType<Component> {
         public List<String> examples() {
             return this.examples;
         }
+    }
+
+    /**
+     * The result of reading a component.
+     *
+     * @param parsed        the parsed component
+     * @param charsConsumed the number of characters consumed from the input string
+     */
+    record ReadResult(Component parsed, int charsConsumed) {
     }
 }

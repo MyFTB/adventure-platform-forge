@@ -13,7 +13,8 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(value = CommandSyntaxException.class, remap = false)
 public abstract class CommandSyntaxExceptionMixin implements ComponentMessageThrowable {
 
-    @Shadow public abstract Message getRawMessage();
+    @Shadow
+    public abstract Message getRawMessage();
 
     @Override
     public @NotNull Component componentMessage() {

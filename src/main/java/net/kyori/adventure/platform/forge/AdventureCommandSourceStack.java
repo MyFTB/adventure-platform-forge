@@ -7,5 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 public interface AdventureCommandSourceStack extends ForwardingAudience.Single, Identified {
     void sendSuccess(final @NotNull Component text, final boolean sendToOps);
+
     void sendFailure(final @NotNull Component text);
 }

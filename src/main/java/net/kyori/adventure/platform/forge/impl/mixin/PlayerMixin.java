@@ -11,10 +11,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(Player.class)
-public abstract class PlayerMixin implements Identified{
+public abstract class PlayerMixin implements Identified {
 
 
-    @Shadow @Final private GameProfile gameProfile;
+    @Shadow
+    @Final
+    private GameProfile gameProfile;
 
     @Override
     public @NotNull Identity identity() {

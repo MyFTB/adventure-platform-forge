@@ -16,20 +16,20 @@ public class ServerBossEventBridge {
         this.event = event;
     }
 
-    public void addAll(Collection<ServerPlayer> players){
+    public void addAll(Collection<ServerPlayer> players) {
         final ClientboundBossEventPacket pkt = ClientboundBossEventPacket.createAddPacket(this.event);
         for (final ServerPlayer player : players) {
             this.event.addPlayer(player);
         }
     }
 
-    public void removeAll(Collection<ServerPlayer> players){
+    public void removeAll(Collection<ServerPlayer> players) {
         for (final ServerPlayer player : players) {
             this.event.removePlayer(player);
         }
     }
 
-    public void replaceSubscriber(ServerPlayer oldSub, ServerPlayer newSub){
+    public void replaceSubscriber(ServerPlayer oldSub, ServerPlayer newSub) {
         this.event.removePlayer(oldSub);
         this.event.addPlayer(newSub);
     }

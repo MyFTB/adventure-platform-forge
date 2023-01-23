@@ -18,10 +18,8 @@ import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
-import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -89,7 +87,9 @@ public class TestMod {
         final UUID uuid = context.getSource().getPlayerOrException().getUUID();
         final Audience audience = ForgeServerAudiences.of(context.getSource().getServer()).player(uuid);
         audience.showBossBar(
-            BossBar.bossBar(Component.text("adventure-platform-forge-test environment").append(Component.text("  appended").color(NamedTextColor.DARK_PURPLE)), 1F, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS));
+            BossBar.bossBar(
+                Component.text("adventure-platform-forge-test environment").append(Component.text("  appended").color(NamedTextColor.DARK_PURPLE)),
+                1F, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS));
         return Command.SINGLE_SUCCESS;
     }
 

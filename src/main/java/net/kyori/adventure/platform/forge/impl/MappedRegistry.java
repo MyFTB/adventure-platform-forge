@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
  * required that any element that appears in one is present in the other, so mappings will never
  * return null.</p>
  *
- * @param <Mc> The Minecraft type
+ * @param <Mc>  The Minecraft type
  * @param <Adv> The Adventure type
  */
 public class MappedRegistry<Mc, Adv> {
@@ -28,15 +28,9 @@ public class MappedRegistry<Mc, Adv> {
     private final Map<Adv, Mc> adventureToMc;
 
 
-    static <Mc extends Enum<Mc>, Adv extends Enum<Adv>> MappedRegistry<Mc, Adv> named(final Class<Mc> mcType, final Function<String, @Nullable Mc> mcByName, final Class<Adv> advType, final Index<String, Adv> names) {
-        return new MappedRegistry.OfEnum<>(mcType, mcByName, advType, names::key);
-    }
-
-    static <Mc, Adv> MappedRegistry<Mc, Adv> named(final Function<String, @Nullable Mc> mcByName, final Supplier<Iterable<Mc>> mcValues, final Index<String, Adv> names, final Supplier<Iterable<Adv>> adventureValues) {
-        return new MappedRegistry<>(new HashMap<>(), new HashMap<>(), mcByName, mcValues, names::key, adventureValues);
-    }
-
-    MappedRegistry(final Map<Mc, Adv> mcMap, final Map<Adv, Mc> adventureMap, final Function<String, @Nullable Mc> mcByName, final Supplier<Iterable<Mc>> mcValues, final Function<Adv, @Nullable String> advToName, final Supplier<Iterable<Adv>> adventureValues) {
+    MappedRegistry(final Map<Mc, Adv> mcMap, final Map<Adv, Mc> adventureMap, final Function<String, @Nullable Mc> mcByName,
+                   final Supplier<Iterable<Mc>> mcValues, final Function<Adv, @Nullable String> advToName,
+                   final Supplier<Iterable<Adv>> adventureValues) {
         this.mcToAdventure = mcMap;
         this.adventureToMc = adventureMap;
 
@@ -56,13 +50,24 @@ public class MappedRegistry<Mc, Adv> {
         checkCoverage(this.mcToAdventure, mcValues.get());
     }
 
+    static <Mc extends Enum<Mc>, Adv extends Enum<Adv>> MappedRegistry<Mc, Adv> named(final Class<Mc> mcType,
+                                                                                      final Function<String, @Nullable Mc> mcByName,
+                                                                                      final Class<Adv> advType, final Index<String, Adv> names) {
+        return new MappedRegistry.OfEnum<>(mcType, mcByName, advType, names::key);
+    }
+
+    static <Mc, Adv> MappedRegistry<Mc, Adv> named(final Function<String, @Nullable Mc> mcByName, final Supplier<Iterable<Mc>> mcValues,
+                                                   final Index<String, Adv> names, final Supplier<Iterable<Adv>> adventureValues) {
+        return new MappedRegistry<>(new HashMap<>(), new HashMap<>(), mcByName, mcValues, names::key, adventureValues);
+    }
+
     /**
      * Validates that all members of an enum are present in the given map Throws {@link
      * IllegalStateException} if there is a missing value.
      *
      * @param toCheck The map to check
-     * @param values The values to verify are keys of the provided map
-     * @param <T> The type of enum
+     * @param values  The values to verify are keys of the provided map
+     * @param <T>     The type of enum
      * @throws IllegalStateException if a value is missing
      */
     private static <T> void checkCoverage(final Map<T, ?> toCheck, final Iterable<T> values) throws IllegalStateException {
@@ -95,8 +100,10 @@ public class MappedRegistry<Mc, Adv> {
 
     static class OfEnum<Mc extends Enum<Mc>, Adv extends Enum<Adv>> extends MappedRegistry<Mc, Adv> {
 
-        OfEnum(final Class<Mc> mcType, final Function<String, @Nullable Mc> mcByName, final Class<Adv> advType, final Function<Adv, @Nullable String> advToName) {
-            super(new EnumMap<>(mcType), new EnumMap<>(advType), mcByName, () -> Arrays.asList(mcType.getEnumConstants()), advToName, () -> Arrays.asList(advType.getEnumConstants()));
+        OfEnum(final Class<Mc> mcType, final Function<String, @Nullable Mc> mcByName, final Class<Adv> advType,
+               final Function<Adv, @Nullable String> advToName) {
+            super(new EnumMap<>(mcType), new EnumMap<>(advType), mcByName, () -> Arrays.asList(mcType.getEnumConstants()), advToName,
+                () -> Arrays.asList(advType.getEnumConstants()));
         }
     }
 }

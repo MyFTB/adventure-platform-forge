@@ -9,7 +9,7 @@ public interface AdventureCommandSourceStackInternal extends AdventureCommandSou
     /**
      * Set the audience to be delegated to.
      *
-     * @param wrapped wrapped audience
+     * @param wrapped    wrapped audience
      * @param controller controller to render with
      * @return the wrapped audience
      */

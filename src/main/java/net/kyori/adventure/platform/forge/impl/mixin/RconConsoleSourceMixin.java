@@ -21,11 +21,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(RconConsoleSource.class)
-public class RconConsoleSourceMixin implements RenderableAudience, ForwardingAudience.Single{
-    @Shadow @Final private MinecraftServer server;
-    @Shadow @Final private StringBuffer buffer;
-    private volatile Pointers adventure$pointers;
+public class RconConsoleSourceMixin implements RenderableAudience, ForwardingAudience.Single {
     private final Map<ForgeAudiences, Audience> adventure$renderers = new MapMaker().weakKeys().makeMap();
+    @Shadow
+    @Final
+    private MinecraftServer server;
+    @Shadow
+    @Final
+    private StringBuffer buffer;
+    private volatile Pointers adventure$pointers;
 
     @Override
     public Audience renderUsing(final ForgeServerAudiencesImpl controller) {

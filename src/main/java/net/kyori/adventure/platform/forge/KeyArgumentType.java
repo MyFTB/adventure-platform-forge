@@ -17,6 +17,9 @@ import org.jetbrains.annotations.NotNull;
 public final class KeyArgumentType implements ArgumentType<Key> {
     private static final KeyArgumentType INSTANCE = new KeyArgumentType();
 
+    private KeyArgumentType() {
+    }
+
     /**
      * Get an argument type instance for {@link Key}s.
      *
@@ -37,9 +40,6 @@ public final class KeyArgumentType implements ArgumentType<Key> {
      */
     public static @NotNull Key key(final @NotNull CommandContext<?> ctx, final @NotNull String id) {
         return ctx.getArgument(id, Key.class);
-    }
-
-    private KeyArgumentType() {
     }
 
     @Override

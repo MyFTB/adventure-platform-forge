@@ -10,12 +10,18 @@ import net.minecraft.world.BossEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractBossBarListener<T extends BossEvent> implements BossBar.Listener{
-    private final ForgeAudiences controller;
+public abstract class AbstractBossBarListener<T extends BossEvent> implements BossBar.Listener {
     protected final Map<BossBar, T> bars = new IdentityHashMap<>();
+    private final ForgeAudiences controller;
 
     protected AbstractBossBarListener(final ForgeAudiences controller) {
         this.controller = controller;
+    }
+
+    private static void updateFlags(final @NotNull BossEvent bar, final @NotNull Set<BossBar.Flag> flags) {
+        bar.setCreateWorldFog(flags.contains(BossBar.Flag.CREATE_WORLD_FOG));
+        bar.setDarkenScreen(flags.contains(BossBar.Flag.DARKEN_SCREEN));
+        bar.setPlayBossMusic(flags.contains(BossBar.Flag.PLAY_BOSS_MUSIC));
     }
 
     @Override
@@ -40,21 +46,17 @@ public abstract class AbstractBossBarListener<T extends BossEvent> implements Bo
     }
 
     @Override
-    public void bossBarOverlayChanged(final @NotNull BossBar bar, final BossBar.@NotNull Overlay oldOverlay, final BossBar.@NotNull Overlay newOverlay) {
+    public void bossBarOverlayChanged(final @NotNull BossBar bar, final BossBar.@NotNull Overlay oldOverlay,
+                                      final BossBar.@NotNull Overlay newOverlay) {
         if (oldOverlay != newOverlay) {
             this.minecraft(bar).setOverlay(GameEnums.BOSS_BAR_OVERLAY.toMinecraft(newOverlay));
         }
     }
 
     @Override
-    public void bossBarFlagsChanged(final @NotNull BossBar bar, final @NotNull Set<BossBar.Flag> flagsRemoved, final @NotNull Set<BossBar.Flag> flagsAdded) {
+    public void bossBarFlagsChanged(final @NotNull BossBar bar, final @NotNull Set<BossBar.Flag> flagsRemoved,
+                                    final @NotNull Set<BossBar.Flag> flagsAdded) {
         updateFlags(this.minecraft(bar), bar.flags());
-    }
-
-    private static void updateFlags(final @NotNull BossEvent bar, final @NotNull Set<BossBar.Flag> flags) {
-        bar.setCreateWorldFog(flags.contains(BossBar.Flag.CREATE_WORLD_FOG));
-        bar.setDarkenScreen(flags.contains(BossBar.Flag.DARKEN_SCREEN));
-        bar.setPlayBossMusic(flags.contains(BossBar.Flag.PLAY_BOSS_MUSIC));
     }
 
     private T minecraft(final @NotNull BossBar bar) {

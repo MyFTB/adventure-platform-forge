@@ -13,7 +13,9 @@ public interface LocaleHolderBridge {
      * @return A Locale object matching the provided locale string
      */
     static @Nullable Locale toLocale(final @Nullable String mcLocale) {
-        if (mcLocale == null) return null;
+        if (mcLocale == null) {
+            return null;
+        }
 
         final String[] parts = mcLocale.split("_", 3);
         return switch (parts.length) {

@@ -11,9 +11,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.platform.forge.AdventureCommandSourceStack;
 import net.kyori.adventure.platform.forge.ForgeAudiences;
 import net.kyori.adventure.platform.forge.ForgeServerAudiences;
-import net.kyori.adventure.platform.forge.AdventureCommandSourceStack;
 import net.kyori.adventure.platform.forge.impl.AdventureCommandSourceStackInternal;
 import net.kyori.adventure.platform.forge.impl.AdventureCommon;
 import net.kyori.adventure.platform.forge.impl.WrappedComponent;
@@ -36,6 +36,20 @@ import org.jetbrains.annotations.Nullable;
 public final class ForgeServerAudiencesImpl implements ForgeServerAudiences {
 
     private static final Set<ForgeServerAudiencesImpl> INSTANCES = Collections.newSetFromMap(new WeakHashMap<>());
+    final ServerBossBarListener bossBars;
+    private final MinecraftServer server;
+    private final Function<Pointered, ?> partition;
+    private final ComponentRenderer<Pointered> renderer;
+    public ForgeServerAudiencesImpl(final MinecraftServer server, final Function<Pointered, ?> partition,
+                                    final ComponentRenderer<Pointered> renderer) {
+        this.server = server;
+        this.partition = partition;
+        this.renderer = renderer;
+        this.bossBars = new ServerBossBarListener(this);
+        synchronized (INSTANCES) {
+            INSTANCES.add(this);
+        }
+    }
 
     /**
      * Perform an action on every audience provider instance.
@@ -47,21 +61,6 @@ public final class ForgeServerAudiencesImpl implements ForgeServerAudiences {
             for (final ForgeServerAudiencesImpl instance : INSTANCES) {
                 actor.accept(instance);
             }
-        }
-    }
-
-    private final MinecraftServer server;
-    private final Function<Pointered, ?> partition;
-    private final ComponentRenderer<Pointered> renderer;
-    final ServerBossBarListener bossBars;
-
-    public ForgeServerAudiencesImpl(final MinecraftServer server, final Function<Pointered, ?> partition, final ComponentRenderer<Pointered> renderer) {
-        this.server = server;
-        this.partition = partition;
-        this.renderer = renderer;
-        this.bossBars = new ServerBossBarListener(this);
-        synchronized (INSTANCES) {
-            INSTANCES.add(this);
         }
     }
 
@@ -149,7 +148,9 @@ public final class ForgeServerAudiencesImpl implements ForgeServerAudiences {
 
     @Override
     public net.minecraft.network.chat.@NotNull Component toNative(final @NotNull Component adventure) {
-        if (adventure == Component.empty()) return TextComponent.EMPTY;
+        if (adventure == Component.empty()) {
+            return TextComponent.EMPTY;
+        }
 
         return new WrappedComponent(requireNonNull(adventure, "adventure"), this.partition, this.renderer);
     }
