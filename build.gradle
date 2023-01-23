@@ -182,7 +182,7 @@ publishing {
             pom {
                 name = 'adventure-platform-forge'
                 description = 'Integration between adventure and Forge platform.'
-                url = 'https://github.com/MojangPlsFix/adventure-platform-forge'
+                url = 'https://github.com/MyFTB/adventure-platform-forge'
                 licenses {
                     license {
                         name = 'MIT'
