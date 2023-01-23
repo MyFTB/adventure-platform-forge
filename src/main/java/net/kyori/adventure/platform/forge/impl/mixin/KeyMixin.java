@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(value = Key.class, remap = false)
-public class KeyMixin {
+public interface KeyMixin {
     /**
      * Creates a key.
      *
@@ -20,7 +20,7 @@ public class KeyMixin {
      * @author MojangPlsFix,zml2008
      */
     @Overwrite
-    public static @NotNull Key key(final String namespace, final String value) {
+    static @NotNull Key key(final String namespace, final String value) {
         try {
             return new ResourceLocationKeyBridge(namespace, value);
         } catch (final ResourceLocationException ex) {
