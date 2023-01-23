@@ -1,6 +1,5 @@
 package net.kyori.adventure.platform.forge.impl;
 
-import net.kyori.adventure.platform.forge.impl.server.visitor.ToNativeConverter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import net.minecraft.network.chat.MutableComponent;
@@ -33,8 +32,6 @@ public final class NonWrappingComponentSerializer implements ComponentSerializer
         this.bypassIsAllowedFromServer.set(true);
         final MutableComponent mutableComponent;
         try {
-            final ToNativeConverter converter = new ToNativeConverter();
-            converter.accept(component);
             mutableComponent =
                 net.minecraft.network.chat.Component.Serializer.fromJson(net.minecraft.network.chat.Component.Serializer.GSON.toJsonTree(component));
         } finally {
