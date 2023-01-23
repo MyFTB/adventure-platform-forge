@@ -177,9 +177,7 @@ publishing {
             groupId = "net.kyori.adventure"
             artifactId = "adventure-platform-forge"
 
-            shadow(MavenPublication) { publication ->
-                project.shadow.component(publication)
-            }
+            artifact tasks.shadowJar
             
             pom {
                 name = 'adventure-platform-forge'
