@@ -186,7 +186,7 @@ publishing {
                 licenses {
                     license {
                         name = 'MIT'
-                        url = 'hhttps://github.com/MojangPlsFix/adventure-platform-forge/blob/mc/1.18/LICENSE'
+                        url = 'https://github.com/MyFTB/adventure-platform-forge/blob/mc/1.18/LICENSE'
                     }
                 }
                 developers {
@@ -197,7 +197,7 @@ publishing {
                 }
                 issueManagement {
                     system = 'GitHub Issues'
-                    url = 'https://github.com/MojangPlsFix/adventure-platform-forge'
+                    url = 'https://github.com/MyFTB/adventure-platform-forge'
                 }
             }
         }
