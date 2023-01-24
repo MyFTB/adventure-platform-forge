@@ -17,7 +17,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = '0.1.0'
+version = '0.2.0'
 group = 'net.kyori.adventure.platform.forge'
 archivesBaseName = 'adventure-platform-forge'
 
@@ -107,9 +107,9 @@ shadowJar {
     classifier = ''
     configurations = [project.configurations.shade]
 
-    relocate('net.kyori', "${project.group}.shadow.net.kyori") {
+    /*relocate('net.kyori', "${project.group}.shadow.net.kyori") {
         exclude 'net/kyori/adventure/platform/forge/**'
-    }
+    }*/
 
     relocate 'org.jetbrains', "${project.group}.shadow.org.jetbrains"
     relocate 'org.intellij', "${project.group}.shadow.org.intellij"
