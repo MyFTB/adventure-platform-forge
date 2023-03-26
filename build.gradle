@@ -17,7 +17,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = '0.2.0'
+version = '0.3.0'
 group = 'net.kyori.adventure.platform.forge'
 archivesBaseName = 'adventure-platform-forge'
 
@@ -79,14 +79,14 @@ dependencies {
     // Apply Mixin AP
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    shade "net.kyori:adventure-api:4.11.0"
-    shade "net.kyori:adventure-key:4.11.0"
+    shade "net.kyori:adventure-api:4.13.0"
+    shade "net.kyori:adventure-key:4.13.0"
 
-    shade "net.kyori:adventure-platform-api:4.1.0"
+    shade "net.kyori:adventure-platform-api:4.3.0"
 
-    shade "net.kyori:adventure-text-minimessage:4.11.0"
-    shade "net.kyori:adventure-text-serializer-gson:4.11.0"
-    shade "net.kyori:adventure-text-serializer-plain:4.11.0"
+    shade "net.kyori:adventure-text-minimessage:4.13.0"
+    shade "net.kyori:adventure-text-serializer-gson:4.13.0"
+    shade "net.kyori:adventure-text-serializer-plain:4.13.0"
 
     shade "net.kyori:examination-api:1.3.0"
     shade "net.kyori:examination-string:1.3.0"

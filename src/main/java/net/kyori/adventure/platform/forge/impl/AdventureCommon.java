@@ -1,7 +1,11 @@
 package net.kyori.adventure.platform.forge.impl;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,7 +49,16 @@ public class AdventureCommon {
     public static final ComponentFlattener FLATTENER;
     private static final Pattern LOCALIZATION_PATTERN = Pattern.compile("%(?:(\\d+)\\$)?s");
 
+    public static final ScheduledExecutorService SCHEDULER;
+
     static {
+        // Daemon thread executor for scheduled tasks
+        SCHEDULER = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
+            .setNameFormat("adventure-platform-fabric-scheduler-%d")
+            .setDaemon(true)
+            .setUncaughtExceptionHandler((thread, ex) -> LOGGER.error("An uncaught exception occurred in scheduler thread '{}':", thread.getName(), ex))
+            .build());
+
         final ComponentFlattener.Builder flattenerBuilder = ComponentFlattener.basic().toBuilder();
 
 
@@ -104,6 +117,14 @@ public class AdventureCommon {
 
     public AdventureCommon() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        // Perform scheduled cleanup
+        SCHEDULER.scheduleWithFixedDelay(
+            ClickCallbackRegistry.INSTANCE::cleanUp,
+            ClickCallbackRegistry.CLEAN_UP_RATE,
+            ClickCallbackRegistry.CLEAN_UP_RATE,
+            TimeUnit.SECONDS
+        );
 
         modBus.addListener(this::commonSetup);
 
